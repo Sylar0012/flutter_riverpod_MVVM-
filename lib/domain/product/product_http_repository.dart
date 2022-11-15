@@ -1,21 +1,48 @@
+import 'package:data_app/domain/product/product.dart';
+
 class ProductHttpRepository {
-  void findById(int id) {
+  //fake data
+  List<Product> list = [
+    Product(1, "바나나", 1000),
+    Product(2, "딸기", 2000),
+    Product(3, "참외", 3000),
+  ];
+
+  Product findById(int id) {
     //http 통신코드
+    Product product = list.singleWhere((product) => product.id == id);
+    return product;
   }
 
-  void findAll() {
-    //http 통신코드
+  List<Product> findAll() {
+    return list;
   }
 
-  void insert() {
+  // name,price만 받아냄.
+  Product insert(Product product) {
     //http 통신코드
+    product.id = 4;
+    list = [...list, product];
+    return product;
   }
 
-  void updateById(int id) {
+  Product updateById(int id, Product productDto) {
     //http 통신코드
+    list = list.map((product) {
+      if (product.id == id) {
+        product = productDto;
+        return product;
+      } else {
+        return product;
+      }
+    }).toList();
+    productDto.id = id;
+    return productDto;
   }
 
-  void deleteById(int id) {
+  int deleteById(int id) {
     //http 통신코드
+    list = list.where((product) => product.id == id).toList();
+    return 1;
   }
 }
