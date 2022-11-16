@@ -1,5 +1,5 @@
 import 'package:data_app/controller/product_controller.dart';
-import 'package:data_app/views/product/list/product_list_view_model.dart';
+import 'package:data_app/views/product/list/product_list_view_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,7 +10,7 @@ class ProductListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // ProductListPage가 build 될때 watch로 VM 보고있음
     // VM는 처음 시작할때 repo에 붙어서 findall State 한 상황.
-    final pm = ref.watch(productListViewModel);
+    final pm = ref.watch(productListViewStore);
     final pc = ref.read(productController);
     pc.findAll();
     return Scaffold(
