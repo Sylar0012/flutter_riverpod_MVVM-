@@ -1,4 +1,10 @@
 import 'package:data_app/domain/product/product.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// 창고에 넣음
+final productHttpRepository = Provider<ProductHttpRepository>((ref) {
+  return ProductHttpRepository();
+});
 
 class ProductHttpRepository {
   //fake data
