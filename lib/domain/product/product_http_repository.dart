@@ -29,54 +29,42 @@ class ProductHttpRepository {
   //   return productList;
   // }
 
+  Future<Product> findById(int id) async {
+    Response response =
+        await _ref.read(httpConnector).get("/api/product/${id}");
+    Product product = Product.fromJson(jsonDecode(response.body));
+    return product;
+  }
+
   Future<List<Product>> findAll() async {
     Response response = await _ref.read(httpConnector).get("/api/product");
     List<dynamic> dataList = jsonDecode(response.body)["data"];
     return dataList.map((e) => Product.fromJson(e)).toList();
   }
 
-  // Future<List<Product>> insert(Product productReqDto) async {
-  //   Response response = await _ref.read(httpConnector).get("/api/product");
-  //
-  //   return product;
-  // }
+  // name, price
+  Future<Product> insert(Product productReqDto) async {
+    String body = jsonEncode(productReqDto.toJson());
 
-  // // name,price만 받아냄.
-// Product insert(Product product) {
-//   //http 통신코드
-//   product.id = 4;
-//   list = [...list, product];
-//   return product;
-// }
+    Response response =
+        await _ref.read(httpConnector).post("/api/product", body);
+    Product product = Product.fromJson(jsonDecode(response.body)["data"]);
+    return product;
+  }
 
-  // Product findById(int id) {
-  //   //http 통신코드
-  //   Product product = list.singleWhere((product) => product.id == id);
-  //   return product;
-  // }
-  //
+  Future<int> deleteById(int id) async {
+    print("repository delete  111 : ${id}");
+    Response response =
+        await _ref.read(httpConnector).delete("/api/product/${id}");
+    print("repository delete  222 :${response.body}");
+    return jsonDecode(response.body)["code"];
+  }
 
-  //
-  // Product updateById(int id, Product productDto) {
-  //   //http 통신코드
-  //   list = list.map((product) {
-  //     if (product.id == id) {
-  //       product = productDto;
-  //       return product;
-  //     } else {
-  //       return product;
-  //     }
-  //   }).toList();
-  //   productDto.id = id;
-  //   return productDto;
-  // }
-  //
-  // int deleteById(int id) {
-  //   //http 통신코드
-  //   list = list.where((product) => product.id == id).toList();
-  //   if (id == 4) {
-  //     return -1;
-  //   }
-  //   return 1;
-  // }
+  Future<Product> updateById(int id, Product productReqDto) async {
+    String body = jsonEncode(productReqDto.toJson());
+    Response response =
+        await _ref.read(httpConnector).put("/api/product/${id}", body);
+    Product product = Product.fromJson(jsonDecode(response.body)["data"]);
+    return product;
+  }
 }

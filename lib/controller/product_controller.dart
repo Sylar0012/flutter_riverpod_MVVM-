@@ -3,7 +3,9 @@
 import 'package:data_app/domain/product/product.dart';
 import 'package:data_app/domain/product/product_http_repository.dart';
 import 'package:data_app/main.dart';
+import 'package:data_app/views/components/my_alert_dialog.dart';
 import 'package:data_app/views/product/list/product_list_view_store.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // @Controller 느낌
@@ -29,37 +31,32 @@ class ProductController {
     _ref.read(productListViewStore.notifier).onRefresh(productList);
   }
 
-  // void insert(Product productReqDto) async {
-  //   Product productRespDto =
-  //       await _ref.read(productHttpRepository).insert(productReqDto);
-  //   _ref.read(productListViewStore.notifier).addProduct(productRespDto);
-  // }
+  void insert(Product productReqDto) async {
+    print(productReqDto.name);
+    Product productRespDto =
+        await _ref.read(productHttpRepository).insert(productReqDto);
+    print(productRespDto.name);
+    _ref.read(productListViewStore.notifier).addProduct(productRespDto);
+  }
 
-  // void insert(Product productReqDto) {
-  //   Product productRespDto =
-  //       _ref.read(productHttpRepository).insert(productReqDto);
-  //   _ref.read(productListViewStore.notifier).addProduct(productRespDto);
-  // }
-  //
-  // void deleteById(int id) {
-  //   int result = _ref.read(productHttpRepository).deleteById(id);
-  //   if (result == 1) {
-  //     _ref.read(productListViewStore.notifier).removeProduct(id);
-  //     showCupertinoDialog(
-  //       context: context,
-  //       builder: (context) => MyAlertDialog(msg: "상품 삭제 성공"),
-  //     );
-  //   } else {
-  //     showCupertinoDialog(
-  //       context: context,
-  //       builder: (context) => MyAlertDialog(msg: "상품 삭제 실패"),
-  //     );
-  //   }
-  // }
-  //
-  // void changePrice(int id) {
-  //   Product product = _ref.read(productHttpRepository).findById(id);
-  //   product.price = 20000;
-  //   _ref.read(productListViewStore.notifier).changeProductPrice(product);
-  // }
+  void deleteById(int id) async {
+    print("cotroller 11 : ${id}");
+    int code = await _ref.read(productHttpRepository).deleteById(id);
+    print("cotroller 22 : ${id}");
+    if (code == 1) {
+      // findAll 해도 되는데 f5랑 같은 효과라 부하가 심함.
+      _ref.read(productListViewStore.notifier).removeProduct(id);
+    } else {
+      showCupertinoDialog(
+        context: context,
+        builder: (context) => MyAlertDialog(msg: "상품 삭제 실패"),
+      );
+    }
+  }
+
+  void updateById(int id, Product productReqDto) async {
+    Product productRespDto =
+        await _ref.read(productHttpRepository).updateById(id, productReqDto);
+    _ref.read(productListViewStore.notifier).updateProduct(productRespDto);
+  }
 }

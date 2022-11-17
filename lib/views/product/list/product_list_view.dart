@@ -1,7 +1,7 @@
 import 'package:data_app/controller/product_controller.dart';
 import 'package:data_app/domain/product/product.dart';
-import 'package:data_app/views/components/my_alert_dialog.dart';
 import 'package:data_app/views/product/list/product_list_view_store.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,8 +11,6 @@ class ProductListView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // ProductListPage가 build 될때 watch로 VM 보고있음
-    // VM는 처음 시작할때 repo에 붙어서 findall State 한 상황.
     final pm = ref.watch(productListViewStore);
     final pc = ref.read(productController);
 
@@ -20,39 +18,33 @@ class ProductListView extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          //pc.insert(Product(4, "호박", 2000));
-          showCupertinoDialog(
-            context: context,
-            builder: (context) => MyAlertDialog(msg: "상품 추가 성공"),
-          );
+          pc.insert(Product(id: 0, name: '호박', price: 6000));
         },
       ),
-      appBar: AppBar(
-        title: Text("ProductListPage"),
-      ),
-      body: _buildListView(pm),
+      appBar: AppBar(title: Text("product_list_page")),
+      body: _buildListView(pm, pc),
     );
   }
 
-  Widget _buildListView(List<Product> pm) {
+  Widget _buildListView(List<Product> pm, ProductController pc) {
     if (!(pm.length > 0)) {
       return Center(
-        child: Image.asset(
-          "assets/images/loading.gif",
-          width: 400,
-          height: 400,
-        ),
-      );
+          child: Image.asset(
+        "assets/images/loading.gif",
+        width: 400,
+        height: 400,
+      ));
     } else {
       return ListView.builder(
         itemCount: pm.length,
         itemBuilder: (context, index) => ListTile(
           key: ValueKey(pm[index].id),
           onTap: () {
-            //pc.deleteById(pm[index].id);
+            pc.deleteById(pm[index].id);
           },
           onLongPress: () {
-            //pc.changePrice(pm[index].id);
+            pc.updateById(
+                pm[index].id, Product(id: 0, name: '호박', price: 6000));
           },
           leading: Icon(Icons.account_balance_wallet),
           title: Text(

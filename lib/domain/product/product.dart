@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 // 생성자
 class Product {
   Product({

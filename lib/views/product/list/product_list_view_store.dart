@@ -13,8 +13,8 @@ class ProductListViewStore extends StateNotifier<List<Product>> {
   ProductListViewStore(super.state, this._ref);
 
   void initViewModel() async {
-    List<Product> product = await _ref.read(productHttpRepository).findAll();
-    state = product;
+    List<Product> products = await _ref.read(productHttpRepository).findAll();
+    state = products;
   }
 
   void onRefresh(List<Product> products) {
@@ -27,6 +27,7 @@ class ProductListViewStore extends StateNotifier<List<Product>> {
   }
 
   void addProduct(Product productRespDto) {
+    print(productRespDto.name);
     state = [...state, productRespDto];
   }
 
@@ -34,7 +35,7 @@ class ProductListViewStore extends StateNotifier<List<Product>> {
     state = state.where((product) => product.id != id).toList();
   }
 
-  void changeProductPrice(Product productDto) {
+  void updateProduct(Product productDto) {
     state = state.map((product) {
       if (product.id == productDto.id) {
         product = productDto;
