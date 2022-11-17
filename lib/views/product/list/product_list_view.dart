@@ -15,11 +15,12 @@ class ProductListView extends ConsumerWidget {
     // VM는 처음 시작할때 repo에 붙어서 findall State 한 상황.
     final pm = ref.watch(productListViewStore);
     final pc = ref.read(productController);
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          pc.insert(Product(4, "호박", 2000));
+          //pc.insert(Product(4, "호박", 2000));
           showCupertinoDialog(
             context: context,
             builder: (context) => MyAlertDialog(msg: "상품 추가 성공"),
@@ -34,10 +35,10 @@ class ProductListView extends ConsumerWidget {
         itemBuilder: (context, index) => ListTile(
           key: ValueKey(pm[index].id),
           onTap: () {
-            pc.deleteById(pm[index].id);
+            //pc.deleteById(pm[index].id);
           },
           onLongPress: () {
-            pc.changePrice(pm[index].id);
+            //pc.changePrice(pm[index].id);
           },
           leading: Icon(Icons.account_balance_wallet),
           title: Text(

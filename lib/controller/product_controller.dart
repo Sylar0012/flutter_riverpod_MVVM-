@@ -3,10 +3,7 @@
 import 'package:data_app/domain/product/product.dart';
 import 'package:data_app/domain/product/product_http_repository.dart';
 import 'package:data_app/main.dart';
-import 'package:data_app/views/components/my_alert_dialog.dart';
 import 'package:data_app/views/product/list/product_list_view_store.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // @Controller 느낌
@@ -26,36 +23,42 @@ class ProductController {
    */
 
   //리프레시 할때 씀
-  void findAll() {
-    List<Product> productList = _ref.read(productHttpRepository).findAll();
+  void findAll() async {
+    List<Product> productList =
+        await _ref.read(productHttpRepository).findAll();
     _ref.read(productListViewStore.notifier).onRefresh(productList);
   }
 
-  void insert(Product productReqDto) {
-    Product productRespDto =
-        _ref.read(productHttpRepository).insert(productReqDto);
-    _ref.read(productListViewStore.notifier).addProduct(productRespDto);
+  void findById(int id) async {
+    await _ref.read(productHttpRepository).findById(id);
+    _ref.read(productListViewStore.notifier).one(id);
   }
 
-  void deleteById(int id) {
-    int result = _ref.read(productHttpRepository).deleteById(id);
-    if (result == 1) {
-      _ref.read(productListViewStore.notifier).removeProduct(id);
-      showCupertinoDialog(
-        context: context,
-        builder: (context) => MyAlertDialog(msg: "상품 삭제 성공"),
-      );
-    } else {
-      showCupertinoDialog(
-        context: context,
-        builder: (context) => MyAlertDialog(msg: "상품 삭제 실패"),
-      );
-    }
-  }
-
-  void changePrice(int id) {
-    Product product = _ref.read(productHttpRepository).findById(id);
-    product.price = 20000;
-    _ref.read(productListViewStore.notifier).changeProductPrice(product);
-  }
+  // void insert(Product productReqDto) {
+  //   Product productRespDto =
+  //       _ref.read(productHttpRepository).insert(productReqDto);
+  //   _ref.read(productListViewStore.notifier).addProduct(productRespDto);
+  // }
+  //
+  // void deleteById(int id) {
+  //   int result = _ref.read(productHttpRepository).deleteById(id);
+  //   if (result == 1) {
+  //     _ref.read(productListViewStore.notifier).removeProduct(id);
+  //     showCupertinoDialog(
+  //       context: context,
+  //       builder: (context) => MyAlertDialog(msg: "상품 삭제 성공"),
+  //     );
+  //   } else {
+  //     showCupertinoDialog(
+  //       context: context,
+  //       builder: (context) => MyAlertDialog(msg: "상품 삭제 실패"),
+  //     );
+  //   }
+  // }
+  //
+  // void changePrice(int id) {
+  //   Product product = _ref.read(productHttpRepository).findById(id);
+  //   product.price = 20000;
+  //   _ref.read(productListViewStore.notifier).changeProductPrice(product);
+  // }
 }
