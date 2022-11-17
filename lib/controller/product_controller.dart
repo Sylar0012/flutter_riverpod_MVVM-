@@ -29,10 +29,11 @@ class ProductController {
     _ref.read(productListViewStore.notifier).onRefresh(productList);
   }
 
-  void findById(int id) async {
-    await _ref.read(productHttpRepository).findById(id);
-    _ref.read(productListViewStore.notifier).one(id);
-  }
+  // void insert(Product productReqDto) async {
+  //   Product productRespDto =
+  //       await _ref.read(productHttpRepository).insert(productReqDto);
+  //   _ref.read(productListViewStore.notifier).addProduct(productRespDto);
+  // }
 
   // void insert(Product productReqDto) {
   //   Product productRespDto =

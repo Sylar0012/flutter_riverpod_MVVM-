@@ -35,34 +35,27 @@ class ProductHttpRepository {
     return dataList.map((e) => Product.fromJson(e)).toList();
   }
 
-  Future<Product> findById(int id) async {
-    Response response =
-        await _ref.read(httpConnector).get("/api/product/${id}");
-    Product product = jsonDecode(response.body)["data"];
-
-    return product;
-  }
-
-  //fake data
-  // List<Product> list = [
-  //   Product(1, "바나나", 1000),
-  //   Product(2, "딸기", 2000),
-  //   Product(3, "참외", 3000),
-  // ];
+  // Future<List<Product>> insert(Product productReqDto) async {
+  //   Response response = await _ref.read(httpConnector).get("/api/product");
   //
+  //   return product;
+  // }
+
+  // // name,price만 받아냄.
+// Product insert(Product product) {
+//   //http 통신코드
+//   product.id = 4;
+//   list = [...list, product];
+//   return product;
+// }
+
   // Product findById(int id) {
   //   //http 통신코드
   //   Product product = list.singleWhere((product) => product.id == id);
   //   return product;
   // }
   //
-  // // name,price만 받아냄.
-  // Product insert(Product product) {
-  //   //http 통신코드
-  //   product.id = 4;
-  //   list = [...list, product];
-  //   return product;
-  // }
+
   //
   // Product updateById(int id, Product productDto) {
   //   //http 통신코드

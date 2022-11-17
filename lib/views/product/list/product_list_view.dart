@@ -30,7 +30,21 @@ class ProductListView extends ConsumerWidget {
       appBar: AppBar(
         title: Text("ProductListPage"),
       ),
-      body: ListView.builder(
+      body: _buildListView(pm),
+    );
+  }
+
+  Widget _buildListView(List<Product> pm) {
+    if (!(pm.length > 0)) {
+      return Center(
+        child: Image.asset(
+          "assets/images/loading.gif",
+          width: 400,
+          height: 400,
+        ),
+      );
+    } else {
+      return ListView.builder(
         itemCount: pm.length,
         itemBuilder: (context, index) => ListTile(
           key: ValueKey(pm[index].id),
@@ -47,7 +61,7 @@ class ProductListView extends ConsumerWidget {
           ),
           subtitle: Text("${pm[index].price}"),
         ),
-      ),
-    );
+      );
+    }
   }
 }
